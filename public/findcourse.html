@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+          crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+          crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+          crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>  
+        <script src="app.js"></script>
+          <!-- <link rel="import" href="nav.html"> -->
+        <title>Find Course</title>
+      </head>
+
+<body>
+    <div class="container-fluid">
+  <div id="nav"></div>
+
+  <div class="input-group mb-3 mt-5">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">Find Course</span>
+      </div>
+      <input id="courseid" name="courseid"  type="text" class="form-control" placeholder="Enter Course ID">
+      <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button" onclick="getCourse()">Search</button>
+        </div>
+    </div>
+
+  <div id="showcourse"> </div>
+
+  <script>
+
+      $.get("nav.html", function (data) {
+        document.getElementById('nav').innerHTML = data
+      });
+    function createTableFromCourse(course) {
+      // Create a table element
+      var table = document.createElement("table");
+      var att = document.createAttribute("class");       // Create a "class" attribute
+      att.value = "table";                           // Set the value of the class attribute
+      table.setAttributeNode(att);
+
+      // Create a heading
+      
+      // Create the row and set row data
+      for (var key in course) {
+        // Insert a row
+        var tr = table.insertRow(-1);
+
+      var headerCell = document.createElement("TH");
+      headerCell.innerHTML = key
+      tr.appendChild(headerCell);
+        // Insert cells
+   
+        tcell = tr.insertCell(-1);
+        tcell.innerHTML = course[key];
+      }
+      var tr = table.insertRow(-1);
+      tcell = tr.insertCell(0);
+      var deletebtn = document.createElement("button");
+          deletebtn.setAttribute("class","btn btn-outline-secondary");
+          deletebtn.setAttribute("type","button");
+          deletebtn.setAttribute("onclick","deleteCourse('"+course._id+"')");
+          deletebtn.innerText = "Delete";      
+          tcell.appendChild(deletebtn)    
+      // Return the table element
+      return table;
+    }
+
+
+ function handleGetCourse(err, course) {
+        if (err) {
+          var table = document.createElement("p");
+          table.innerText = this.statusText;
+          console.log("----- >" + this.statusText)
+        } else {
+          var table = createTableFromCourse(course);
+        }
+        // Set the table to course list placeholder
+        var divContainer = document.getElementById("showcourse");
+        divContainer.innerHTML = "";
+        divContainer.appendChild(table);
+      }
+
+      function handleDeleteCourse(err, courseList) {
+        var div = document.createElement("div");
+        if (err) {
+          div.innerHtml = this.statusText;
+          console.log("----- >" + this.statusText)
+        } else {
+
+          div.setAttribute("class","alert alert-warning alert-dismissible fade show")
+          div.setAttribute("role","alert")
+
+          closeBtn = document.createElement("button");
+          closeBtn.setAttribute("type","button");
+          closeBtn.setAttribute("class","close");
+          closeBtn.setAttribute("data-dismiss","alert");
+          closeBtn.setAttribute("class","close");
+          closeBtn.innerText= "&times;"
+          closeBtn.appendChild(div);
+          div.innerText = "Item Deleted Succesfully"
+        }
+        var divContainer = document.getElementById("showcourse");
+        divContainer.innerHTML = "";
+        divContainer.appendChild(div);
+      }
+
+
+    function getCourse() {   
+      // Get id from input text box
+      var courseId = document.getElementById("courseid").value;      
+      if (!courseId || courseId.length < 1)
+        return;
+
+      var url = "/api/courses/" + courseId;
+      submitRequest(url, "GET", undefined, undefined, handleGetCourse);    
+    }
+
+    function deleteCourse(courseId){
+      submitRequest("/api/courses/" + courseId, "DELETE", undefined, undefined, handleDeleteCourse);
+    }
+
+  </script>
+
+</body>
+
+</html>
