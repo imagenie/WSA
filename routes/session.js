@@ -27,7 +27,8 @@ route.post('/', (req, res) => {
                     if(!err) {
                         var tokenObj = {"token": token};
                         res.status(200).send(tokenObj);
-                        console.log("Token: ", tokenObj);
+                        console.log("Token111: ", tokenObj);
+                        
                     }
                     else {
                         res.status(500).send("Token generation failed");
@@ -52,7 +53,7 @@ function validateUser(userInfo) {
     const schema = {
         username: Joi.string().min(4).max(60).required(),
         password: Joi.string().min(4).max(60).required(),
-        role: Joi.string().required()
+       // role: Joi.string().required()
     };
 
     // Validate
