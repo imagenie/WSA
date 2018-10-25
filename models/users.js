@@ -8,10 +8,21 @@
 // Import mongoose module
 const mongoose = require('mongoose');
 
+
+// Connect to MongoDB mlab database 'courses=db'
+
+mongoose.connect('mongodb://imagenie:#mlab234A@ds137600.mlab.com:37600/courses-db', { useNewUrlParser: true })
+.then(() => console.log("Connected to MongoDB"))
+.catch((err) => console.log("Error: Unable to connect to MongoDB", err));
+
+
 // Connect to MongoDB database 'courses=db'
-mongoose.connect('mongodb://localhost:27017/courses-db', { useNewUrlParser: true })
-    .then(() => console.log("Connected to MongoDB"))
-    .catch((err) => console.log("Error: Unable to connect to MongoDB", err));
+// mongoose.connect('mongodb://localhost:27017/courses-db', { useNewUrlParser: true })
+//     .then(() => console.log("Connected to MongoDB"))
+//     .catch((err) => console.log("Error: Unable to connect to MongoDB", err));
+
+
+
 
 // Create Course Schema
 const userSchema = new mongoose.Schema({
