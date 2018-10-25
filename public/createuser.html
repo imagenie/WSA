@@ -13,45 +13,58 @@
       crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <!-- <link rel="import" href="nav.html"> -->
-    <title>Create Course</title>
+    <title>Add User</title>
   </head>
 
 <body>
 
 
   <div class="container-fluid">
-    <div id="nav"></div>
-    <div id="showcourse"> </div>
-  <h1>Create new course</h1>
+    <div id="showuser"> </div>
+  <h2>Add new user</h2>
    
-    <form action="/api/courses" method="POST">
+    <form action="/api/users" method="POST">
 
       <table class="table">
         <tr>
-          <th>Course Name</th>
+          <th>User Name</th>
           <td>
-            <input type="text" class="form-control" id="exampleInputCourseName" aria-describedby="emailHelp" placeholder="Enter Course Name"  name="name">
+            <input type="text" class="form-control" id="exampleInputUserName" aria-describedby="emailHelp" placeholder="Enter User Name"  name="username">
           </td>
         </tr>
         <tr>
-          <th>Author Name</th>
+          <th>Password</th>
           <td>
-            <input type="text" class="form-control" id="exampleInputAuthorName" placeholder="Enter Author Name" name="author">
+            <div class="input-group">
+              <input type="text" class="form-control"  id="newpassword" name="password" placeholder="Enter Password" aria-label="Recipient's username" aria-describedby="button-addon2">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" onclick="GeneratePassword()"> Generate Password</button>
+              </div> 
+            </div>
           </td>
         </tr>
 
         <tr>
-          <th>Price</th>
+          <th>User Role</th>
           <td>
-            <input type="text" class="form-control" id="exampleInputPrice" placeholder="Enter Price" name="price">
+            <div class="btn-group" role="group">
+              <button id="userType" type="button" name="userrole" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Choose
+              </button>
+              <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <div class="dropdown-item" onclick="FixUserRole(this)">Admin</div>
+                <a class="dropdown-item" onclick="FixUserRole(this)">Teacher</a>
+                <a class="dropdown-item" onclick="FixUserRole(this)">Student</a>
+              </div>
+            </div>  
           </td>
         </tr>
         <tr>
-          <th></th>
           <td>
-            <input class="btn btn-danger" type="submit" value="Add Course">
+            <button class="btn btn-danger" type="submit" name="submit">Create User</button>
           </td>
         </tr>
+
       </table>
       <br>
     </form>
@@ -59,12 +72,21 @@
 
   <script>
 
-    function createTableFromCourse(course) {
+    function FixUserRole (arg){
+      document.getElementById("userType").innerHTML = arg.innerHTML;
+      document.getElementById("userType").value = arg.innerHTML;
+    }
+
+    function GeneratePassword(){
+      document.getElementById("newpassword").value =  Math.random().toString(36).slice(-8);
+    }
+
+    function createTableFromUser(user) {
       // Create a table element
       var table = document.createElement("table");
       // Create a heading
       // Create the row and set row data
-      for (var key in course) {
+      for (var key in user) {
         // Insert a row
         var tr = table.insertRow(-1);
         // Insert cells
@@ -72,7 +94,7 @@
         tcell.innerHTML = key;
 
         tcell = tr.insertCell(-1);
-        tcell.innerHTML = course[key];
+        tcell.innerHTML = user[key];
       }
 
       // Return the table element
@@ -94,14 +116,14 @@
           var payload = {};
           var elements = this.elements;
           for (var i = 0; i < elements.length; i++) {
-            if (elements[i].type !== 'submit') {
-              //var valueOfElement = elements[i].type == 'checkbox' ? elements[i].checked : elements[i].value;
+            if (elements[i].type !== "submit" && elements[i].type !== "" ) {
+             //var valueOfElement = elements[i].type == 'checkbox' ? elements[i].checked : elements[i].value;
               var valueOfElement = elements[i].value;
               payload[elements[i].name] = valueOfElement;
             }
           }
 
-          console.log(payload);
+         // console.log(payload);
 
           // Get the token
           var token = getToken();
@@ -112,33 +134,29 @@
           var headers = {};
           setAuthTokenHeader(headers, token);
           // Submit the request
-          submitRequest(path, method, payload, headers, handleCourseCreation);
+          submitRequest(path, method, payload, headers, handleUserCreation);
         });
     }
 
     // Construct the Ajax request and submit it
 
-    function handleCourseCreation(err, course) {
+    function handleUserCreation(err, user) {
       if (!err) {
-        document.loadCourses()
-       // var table = createTableFromCourse(course);
-        // Set the table to course list placeholder
-       // var divContainer = document.getElementById("showcourse");
-       // divContainer.innerHTML = "";
-       // divContainer.appendChild(table);
+
+        parent.LoadPage('showcourse', 'userlist.html');
       }
       else {
         var table = document.createElement("p");
         table.innerText = this.statusText;
-        // Append the table to course list placeholder
-        var divContainer = document.getElementById("showcourse");
+        // Append the table to user list placeholder
+        var divContainer = document.getElementById("showuser");
         divContainer.appendChild(table);
 
       }
 
       console.log(this.readyState);
     };
-
+    
     bindForms();
 
   </script>

@@ -63,7 +63,6 @@
         <div class="col col-lg-3 col-md-auto col-sm-auto">
           <div class="card mt-5 ">
             <h5 class="card-header">Sign Up/ Login</h5>
-            
             <div class="card-body">
               <form id="loginform" action="/api/session" method="POST">
                 <div class="form-group">
@@ -96,12 +95,12 @@
             <div class="card-body">
               <form id="registerForm" action="/api/users" method="POST">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Username</label>
-                  <input type="text" class="form-control" id="exampleInputEmail2" aria-describedby="emailHelp" placeholder="Enter username"
+                  <label for="email">Username</label>
+                  <input type="text" class="form-control" id="email"  placeholder="Enter username"
                     name="username">
                 </div>
                 <div class="form-group">
-                  <label for="exampleInputPassword1">Password</label>
+                  <label for="exampleInputPassword2">Password</label>
                   <input type="password" class="form-control" id="password" placeholder="Enter password" name="password">
                 </div>
                 <!-- <div class="form-group">
@@ -126,13 +125,13 @@
                 <button type="submit" class="btn btn-danger" >Register</button>
               </div>
             </div>
-            </form>
+            </form> 
           </div>
         </div>
       </div>
     </div>
 
-</div>
+
 
     <script>
       // Load all Courses ----------------------------------------------------------------- 
@@ -153,10 +152,11 @@
         document.getElementById("register").style.display = "block";
         document.getElementById("login").style.display = "none";
       }
-console.log("hello");
+
 
       function bindForms() {
-        document.querySelector("form")
+        console.log("------------------- "+document.querySelector("form").name);
+        document.getElementById("registerForm")
           .addEventListener("submit", function (e) {
 
             // Stop it from submitting
@@ -228,6 +228,7 @@ console.log("hello");
       bindForms();
 
     </script>
+  </div>
 </body>
 
 </html>

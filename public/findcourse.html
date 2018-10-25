@@ -110,11 +110,11 @@
 
     function getCourse() {   
       // Get id from input text box
-      var courseId = document.getElementById("courseid").value;      
-      if (!courseId || courseId.length < 1)
+      var courseName = document.getElementById("courseid").value;      
+      if (!courseName || courseName.length < 1)
         return;
 
-      var url = "/api/courses/" + courseId;
+      var url = "/api/courses/" + courseName;
       submitRequest(url, "GET", undefined, undefined, handleGetCourse);    
     }
 

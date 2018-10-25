@@ -9,9 +9,20 @@
 const mongoose = require('mongoose');
 
 // Connect to MongoDB database 'courses=db'
-mongoose.connect('mongodb://localhost:27017/courses-db', { useNewUrlParser: true })
+// live mongodb ************************************************ */
+
+
+mongoose.connect('mongodb://imagenie:#mlab234A@ds137600.mlab.com:37600/courses-db', { useNewUrlParser: true })
     .then(() => console.log("Connected to MongoDB"))
     .catch((err) => console.log("Error: Unable to connect to MongoDB", err));
+
+
+//local mongodb ************************************************ */
+// mongoose.connect('mongodb://localhost:27017/courses-db', { useNewUrlParser: true })
+//     .then(() => console.log("Connected to MongoDB"))
+//     .catch((err) => console.log("Error: Unable to connect to MongoDB", err));
+//************************************************ */
+
 
 // Create Course Schema
 const courseSchema = new mongoose.Schema({
@@ -63,6 +74,22 @@ async function getAllCourses() {
 async function getCourseById(id) {
     try {
         const course = await Course.findById(id);
+        return course;
+    }
+    catch (err) {
+        console.log("Error: Unable to query database");
+        throw err;
+    }
+}
+
+
+/* Get course by ID
+ * IN: id (course object ID)
+ * OUT: Single course object
+ */
+async function getCourseByName(courseName) {
+    try {
+        const course = await Course.find({name:courseName})
         return course;
     }
     catch (err) {
@@ -149,5 +176,6 @@ async function deleteCourseById(id) {
 module.exports.createCourse = createCourse;
 module.exports.getAllCourses = getAllCourses;
 module.exports.getCourseById = getCourseById;
+module.exports.getCourseByName = getCourseByName
 module.exports.updateCourse = updateCourse;
 module.exports.deleteCourseById = deleteCourseById;
