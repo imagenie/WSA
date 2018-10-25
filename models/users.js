@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         minlength: 4,
         maxlength: 60
+    },
+    userrole: {
+        type: String,
+        required: true,
     }
 });
 //------------------------------------------------------------------------------------------------------

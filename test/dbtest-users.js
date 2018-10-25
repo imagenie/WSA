@@ -7,8 +7,9 @@ const {
 function testCreateUser() {
     // Create a course document
     createUser({
-        username: "mubeen",
+        username: "midhun",
         password: "secret",
+        userrole: "Teacher"
     }).then((res) => console.log(res))
         .catch((err) => console.log(err.message));
 }
@@ -20,7 +21,7 @@ function testGetAllUsers() {
 }
 
 function testIsValidUser() {
-    var user = {username: 'mubeen', password: 'secret'};
+    var user = {username: 'midhun', password: 'secret'};
 
     isValidUser(user)
         .then((res) => {

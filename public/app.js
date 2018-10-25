@@ -50,6 +50,7 @@ function saveToken(tokenObj) {
     // Save in config var
     config.token = tokenObj;
     // Save in local storage
+    console.log(tokenObj);
     localStorage.setItem("token", tokenObj.token);
 }
 

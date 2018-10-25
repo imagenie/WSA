@@ -1,12 +1,12 @@
 // Include the required modules
-const { createCourse, getAllCourses, getCourseById, updateCourse } = require('../models/courses');
+const { createCourse, getAllCourses, getCourseById,getCourseByName,updateCourse,deleteCourseById } = require('../models/courses');
 const express = require('express');
 const Joi = require('joi'); // JSON validation
 const authToken = require('../middleware/auth');
 
 const route = express.Router();
 
-"/api/course - URL"
+//"/api/courses - URL"
 // Route handler for get all courses
 route.get('/', (req, res) => {
     // Get all courses
@@ -35,6 +35,22 @@ route.get('/:id', (req, res) => {
             console.log("Error: Unable to get course\n", err);
         })
 });
+//API with param id
+route.get('/:courseName', (req, res) => {
+    const courseName = req.params.courseName;
+    // Get the course object using id
+    getCourseByName(courseName)
+        .then((result) => {
+            res.send(result);
+        })
+        .catch((err) => {
+            res.status(404);
+            res.send("Error: Unable to get course\n" + err.message);
+            console.log("Error: Unable to get course\n", err);
+        })
+}); 
+
+
 
 /****************** END: get requests *************/
 
@@ -112,8 +128,19 @@ route.put('/:id', (req, res) => {
 });
 
 // Handler to delete a course using delete method
-route.delete('/:id', (req, res) => {
+route.delete('/', (req, res) => {
     // Look up the course. If not found return 404
+    const id = req.body._id
+    // Get the course object using id
+    deleteCourseById(id)
+    .then((result) => {
+        res.send(result);
+    })
+    .catch((err) => {
+        res.status(404);
+        res.send("Error: Unable to get course\n" + err.message);
+        console.log("Error: Unable to get course\n", err);
+    })
 
 });
 

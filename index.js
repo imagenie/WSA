@@ -17,6 +17,7 @@ const app = express();
 const morgan = require('morgan'); // Logging
 
 const courses = require('./routes/courses');
+const users = require('./routes/users');
 const session = require('./routes/session');
 const home = require('./routes/home');
 
@@ -31,6 +32,7 @@ app.use(morgan('tiny'));
 
 // Use the route
 app.use('/api/courses', courses);
+app.use('/api/users', users);
 app.use('/api/session', session);
 app.use('/', home);
 app.use(express.static('public')); // static files in public

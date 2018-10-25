@@ -26,8 +26,9 @@ route.post('/', (req, res) => {
                 generateToken(payload, function (err, token) {
                     if(!err) {
                         var tokenObj = {"token": token};
-                        res.status(200).send(tokenObj);
-                        console.log("Token111: ", tokenObj);
+                        
+                       res.status(200).send(tokenObj);
+                       // console.log("Token111: ", tokenObj);
                         
                     }
                     else {

@@ -3,10 +3,8 @@
 
 <head>
     <script src="app.js"></script>
-
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
         crossorigin="anonymous">
-
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
@@ -15,7 +13,7 @@
         crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <!-- <link rel="import" href="nav.html"> -->
-    <title>Course List</title>
+    <title>User List</title>
 </head>
 
 <body>
@@ -26,12 +24,12 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon3">Search Course</span>
                 </div>
-                <input class="form-control mr-sm-2" type="search" id="searchbox" placeholder="Enter Course name" aria-label="Search" onkeyup="searchCourses(this.value)">
+                <input class="form-control mr-sm-2" type="search" id="searchbox" placeholder="Enter Course name" aria-label="Search" onkeyup="searchUsers(this.value)">
 
             </div>
 
         </nav>
-        <div id="showcourse"> </div>
+        <div id="showuser"> </div>
 
         <!-- Button trigger modal -->
         <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
@@ -43,19 +41,13 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Edit Course</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <table class="table table-sm">
-                            <thead class="thead-light">
-                                <tr>
-                                    <td>Couse Name</td>
-                                </tr>
-                            </thead>
-                        </table>
+                        ...
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -66,9 +58,10 @@
         </div>
 
         <script>
-            var allCourses = [];
-            var searchresult = [];
-            function createTableFromCourseList(courseList) {
+
+            function createTable(userList) {
+                var allUsers = [];
+                var searchresult = [];
                 // Create a table element
                 var tableContainer = document.createElement("div");
                 tableContainer.setAttribute("class", "table-responsive");
@@ -78,44 +71,46 @@
                 table.setAttribute("class", "table table-sm table-hover")
                 // Create a heading
                 var header = table.createTHead();
-                header.setAttribute("class", "thead-light")
+                header.setAttribute("class", "thead-dark")
 
                 var tr = header.insertRow(-1);
                 // Insert cells
                 var tcell = tr.insertCell(-1);
                 tcell.innerHTML = "#"
                 tcell = tr.insertCell(-1);
-                tcell.innerHTML = "Course Name"
+                tcell.innerHTML = "User Name"
                 tcell = tr.insertCell(-1);
-                tcell.innerHTML = "Author"
+                tcell.innerHTML = "User Role"
                 tcell = tr.insertCell(-1);
                 tcell.innerHTML = "Edit"
                 tcell = tr.insertCell(-1);
                 tcell.innerHTML = "Delete"
 
                 // Create the row and set row data
-                var len = courseList.length;
+                var len = userList.length;
                 for (var i = 0; i < len; i++) {
                     // Insert a row
                     var tr = table.insertRow(-1);
-                    // Add id attribute for course ID
-                    tr.setAttribute("id", courseList[i]._id);
+                    // Add id attribute for user ID
+                    tr.setAttribute("id", userList[i]._id);
                     // Insert cells
                     var tcell = tr.insertCell(-1);
-                    tcell.innerHTML = i + 1;
+                    tcell.innerHTML = i + 1
+
                     tcell = tr.insertCell(-1);
-                    tcell.innerHTML = courseList[i].name;
+                    tcell.innerHTML = userList[i].username;
+
                     tcell = tr.insertCell(-1);
-                    tcell.innerHTML = courseList[i].author;
+                    tcell.innerHTML = userList[i].userrole;
 
                     // Add 2 more cells for Edit and Delete buttons
                     tcell = tr.insertCell(-1);
                     // Create edit button
                     var editButton = document.createElement("button");
                     editButton.setAttribute("type", "button");
-                    editButton.setAttribute("class", "btn-sm btn-danger edit");
-                    editButton.setAttribute("data-toggle", "modal");
-                    editButton.setAttribute("data-target", "#exampleModal");
+                    editButton.setAttribute("class", "btn  btn-sm btn-danger edit");
+                    // editButton.setAttribute("data-toggle", "modal");
+                    //editButton.setAttribute("data-target", "#exampleModal");
 
                     editButton.innerHTML = "Edit";
                     tcell.appendChild(editButton);
@@ -125,7 +120,7 @@
                     // Create delete button
                     var deleteButton = document.createElement("button");
                     deleteButton.setAttribute("type", "button");
-                    deleteButton.className = "btn-sm btn-danger delete";
+                    deleteButton.className = "btn btn-sm btn-danger delete";
                     deleteButton.innerHTML = "Delete";
                     tcell.appendChild(deleteButton);
                 }
@@ -134,29 +129,27 @@
                 return tableContainer;
             }
 
-            function handleGetCourse(err, courseList) {
-                allCourses = courseList;
+            function handleGetUser(err, userList) {
+                allUsers = userList;
                 if (err) {
                     var table = document.createElement("p");
                     table.innerText = this.statusText;
                 }
-                else { // We got course list
-                    var table = createTableFromCourseList(courseList);
+                else { // We got user list
+                    var table = createTable(userList);
                 }
-                // Set the table to course list placeholder
-                var divContainer = document.getElementById("showcourse");
+                // Set the table to user list placeholder
+                var divContainer = document.getElementById("showuser");
                 divContainer.innerHTML = "";
                 divContainer.appendChild(table);
 
                 // Invoke the bind functions
 
+
                 bindEditButtons();
                 bindDeleteButtons();
             }
 
-            function refreshTable() {
-                submitRequest("/api/courses", "GET", undefined, undefined, handleGetCourse);
-            }
 
             // Bind Edit buttons
             function bindEditButtons() {
@@ -177,9 +170,10 @@
             // Bind delete buttons
             function bindDeleteButtons() {
                 var elements = document.querySelectorAll("button.delete");
-
+                console.log("sssss")
                 if (!elements)
                     return;
+
 
                 for (var i in elements) {
                     var b = elements[i];
@@ -188,29 +182,32 @@
                             id = e.target.parentNode.parentNode.id;
                             payload = { _id: id };
                             header = {};
-                            submitRequest("/api/courses", "DELETE", payload, header, refreshTable);
+                            submitRequest("/api/users", "DELETE", payload, header, refreshTable);
                         }
                         );
                     }
                 }
             }
 
-            function searchCourses(key) {
+            function searchUsers(arr,key) {
 
                 searchresult = [];
-                for (var i in allCourses) {
-                    var b = allCourses[i];
-                    if (b.name.toLowerCase().search(key.toLowerCase()) >= 0) {
-                        searchresult.push(allCourses[i]);
+                for (var i in allUsers) {
+                    var b = allUsers[i];
+                    if (b.username.toLowerCase().search(key.toLowerCase()) >= 0) {
+                        searchresult.push(allUsers[i]);
                     }
                 }
-                var table = createTableFromCourseList(searchresult);
-                var divContainer = document.getElementById("showcourse");
+                var table = createTable(searchresult);
+                var divContainer = document.getElementById("showuser");
                 divContainer.innerHTML = "";
                 divContainer.appendChild(table);
             }
 
-            refreshTable()
+            function refreshTable() {
+                submitRequest("/api/users", "GET", undefined, undefined, handleGetUser);
+            }
+            refreshTable();
         </script>
     </div>
 </body>
